@@ -1,0 +1,12 @@
+name: embedding-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - pandas
+      - pyarrow
+      - scikit-learn
+      - transformers
+      - sentence-transformers
