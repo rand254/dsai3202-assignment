@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/datastore.schema.json
+name: blobkey
+type: azure_blob
+account_name: amazonelectron621656099
+container_name: curated
+credentials:
+  account_key: ""
