@@ -38,10 +38,10 @@ def main():
     df = pd.read_parquet(args.data)
 
     # assume review text column is called 'reviewText'
+    df["reviewText"] = df["reviewText"].fillna("").astype(str)
     df["reviewText"] = df["reviewText"].apply(clean_text)
-
-    # remove very short reviews (<10 characters)
-    df = df[df["reviewText"].str.len() >= 10]
+    # remove empty or very short text   
+    df = df[df["reviewText"].str.len() > 0]
 
     os.makedirs(args.out, exist_ok=True)
     df.to_parquet(os.path.join(args.out, "data.parquet"))
