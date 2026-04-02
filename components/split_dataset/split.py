@@ -29,10 +29,9 @@ def main():
     )
 
     # Second split: validation vs test
-    val_size = args.val_ratio / (1 - args.train_ratio)
     val_df, test_df = train_test_split(
         temp_df,
-        test_size=(1 - val_size),
+        test_size=0.5,
         random_state=args.seed,
         shuffle=True
     )
