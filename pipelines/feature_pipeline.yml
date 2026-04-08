@@ -4,7 +4,7 @@ type: pipeline
 compute: azureml:lab4-cluster
 
 inputs:
-  sample_data:
+  sampled_data:
     type: uri_folder
     path: azureml:amazon_electronics_features_v1_sampled@latest
 
@@ -14,7 +14,7 @@ jobs:
     type: command
     component: azureml:split_dataset@latest
     inputs:
-      data: ${{parent.inputs.sample_data}}
+      data: ${{parent.inputs.sampled_data}}
 
   normalize_train:
     type: command
@@ -36,7 +36,7 @@ jobs:
 
   length_train:
     type: command
-    component: azureml:review_length@latest
+    component: azureml:length_features@latest
     inputs:
       data: ${{parent.jobs.normalize_train.outputs.out}}
 
@@ -46,7 +46,7 @@ jobs:
     inputs:
       data: ${{parent.jobs.normalize_train.outputs.out}}
 
-  tfidf_train:
+  tfidf:
     type: command
     component: azureml:tfidf@latest
     inputs:
@@ -54,17 +54,17 @@ jobs:
       val: ${{parent.jobs.normalize_val.outputs.out}}
       test: ${{parent.jobs.normalize_test.outputs.out}}
 
-  embedding_train:
+  sbert_train:
     type: command
-    component: azureml:semantic_embedding@latest
+    component: azureml:sbert_embeddings@latest
     inputs:
       data: ${{parent.jobs.normalize_train.outputs.out}}
 
-  merge:
+  merge_all:
     type: command
     component: azureml:merge_features@latest
     inputs:
       length: ${{parent.jobs.length_train.outputs.out}}
       sentiment: ${{parent.jobs.sentiment_train.outputs.out}}
-      tfidf: ${{parent.jobs.tfidf_train.outputs.train}}
-      embedding: ${{parent.jobs.embedding_train.outputs.out}}
+      tfidf: ${{parent.jobs.tfidf.outputs.train_out}}
+      embedding: ${{parent.jobs.sbert_train.outputs.out}}

@@ -35,16 +35,17 @@ def clean_text(text):
 def main():
     args = parse_args()
 
-    df = pd.read_parquet(args.data)
+    file_path = os.path.join(args.data, "data.parquet")
+    df = pd.read_parquet(file_path)
 
     # assume review text column is called 'reviewText'
     df["reviewText"] = df["reviewText"].fillna("").astype(str)
     df["reviewText"] = df["reviewText"].apply(clean_text)
     # remove empty or very short text   
-    df = df[df["reviewText"].str.len() > 0]
+    df = df[df["reviewText"].str.strip().str.len() > 0]
 
     os.makedirs(args.out, exist_ok=True)
-    df.to_parquet(os.path.join(args.out, "data.parquet"))
+    df.to_parquet(os.path.join(args.out, "data.parquet"), index=False)
 
     print("Rows after normalization:", len(df))
 

@@ -17,8 +17,12 @@ def parse_args():
 def main():
     args = parse_args()
 
-    # Load dataset
-    df = pd.read_parquet(args.data)
+    # 🔥 FIXED DATA LOADING (still lab style but works with Azure)
+    if os.path.exists(os.path.join(args.data, "data.parquet")):
+        df = pd.read_parquet(os.path.join(args.data, "data.parquet"))
+    else:
+        df = pd.read_parquet(args.data)
+    df = df.sample(n=100000, random_state=42)
 
     # First split: train vs temp
     train_df, temp_df = train_test_split(
@@ -29,9 +33,11 @@ def main():
     )
 
     # Second split: validation vs test
+    val_size = args.val_ratio / (1 - args.train_ratio)
+
     val_df, test_df = train_test_split(
         temp_df,
-        test_size=0.5,
+        test_size=(1 - val_size),
         random_state=args.seed,
         shuffle=True
     )
@@ -41,9 +47,9 @@ def main():
     os.makedirs(args.val_out, exist_ok=True)
     os.makedirs(args.test_out, exist_ok=True)
 
-    train_df.to_parquet(os.path.join(args.train_out, "data.parquet"))
-    val_df.to_parquet(os.path.join(args.val_out, "data.parquet"))
-    test_df.to_parquet(os.path.join(args.test_out, "data.parquet"))
+    train_df.to_parquet(os.path.join(args.train_out, "data.parquet"), index=False)
+    val_df.to_parquet(os.path.join(args.val_out, "data.parquet"), index=False)
+    test_df.to_parquet(os.path.join(args.test_out, "data.parquet"), index=False)
 
     print("Train rows:", len(train_df))
     print("Validation rows:", len(val_df))

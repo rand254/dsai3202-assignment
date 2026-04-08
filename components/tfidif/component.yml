@@ -1,9 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-type: command
 
-name: semantic_embedding
-display_name: Semantic Embedding Features
-description: Create dense semantic embeddings for review text using Sentence-BERT
+name: tfidif
+display_name: TF-IDF Features
+type: command
 
 inputs:
   train:
@@ -12,12 +11,6 @@ inputs:
     type: uri_folder
   test:
     type: uri_folder
-  text_col:
-    type: string
-    default: reviewText
-  model_name:
-    type: string
-    default: all-MiniLM-L6-v2
 
 outputs:
   train_out:
@@ -28,16 +21,14 @@ outputs:
     type: uri_folder
 
 code: .
-environment:
-  azureml:embedding-env:1
 
 command: >
-  python embedding.py
+  python tfidf.py
   --train ${{inputs.train}}
   --val ${{inputs.val}}
   --test ${{inputs.test}}
   --train_out ${{outputs.train_out}}
   --val_out ${{outputs.val_out}}
   --test_out ${{outputs.test_out}}
-  --text_col ${{inputs.text_col}}
-  --model_name ${{inputs.model_name}}
+
+environment: azureml:AzureML-sklearn-1.1-ubuntu20.04-py38-cpu@latest

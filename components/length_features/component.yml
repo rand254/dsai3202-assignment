@@ -1,9 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-type: command
-
 name: tfidf
-display_name: TF-IDF Feature Engineering
-description: Create TF-IDF features from review text
+display_name: TFIDF Features
+type: command
 
 inputs:
   train:
@@ -12,18 +10,6 @@ inputs:
     type: uri_folder
   test:
     type: uri_folder
-  text_col:
-    type: string
-    default: reviewText
-  max_features:
-    type: integer
-    default: 2000
-  ngram_min:
-    type: integer
-    default: 1
-  ngram_max:
-    type: integer
-    default: 2
 
 outputs:
   train_out:
@@ -34,8 +20,6 @@ outputs:
     type: uri_folder
 
 code: .
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
-
 command: >
   python tfidf.py
   --train ${{inputs.train}}
@@ -44,7 +28,7 @@ command: >
   --train_out ${{outputs.train_out}}
   --val_out ${{outputs.val_out}}
   --test_out ${{outputs.test_out}}
-  --text_col ${{inputs.text_col}}
-  --max_features ${{inputs.max_features}}
-  --ngram_min ${{inputs.ngram_min}}
-  --ngram_max ${{inputs.ngram_max}}
+
+environment:
+  conda_file: conda.yml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04

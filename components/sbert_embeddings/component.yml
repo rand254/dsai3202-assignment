@@ -1,6 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: review_length
-display_name: Review Length Features
+
+name: sbert_embeddings
+display_name: SBERT Embeddings
 type: command
 
 inputs:
@@ -12,9 +13,12 @@ outputs:
     type: uri_folder
 
 code: .
-command: >-
-  python length.py
+
+command: >
+  python embedding.py
   --data ${{inputs.data}}
   --out ${{outputs.out}}
 
-environment: azureml:AzureML-sklearn-1.1-ubuntu20.04-py38-cpu@latest
+environment:
+  conda_file: conda.yml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
