@@ -1,8 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 type: command
 
-# The script to run
+display_name: amazon_review_model_training
+experiment_name: amazon_review_training_experiment
+
 code: ../src
+
 command: >
   python train.py 
   --train_data ${{inputs.train_data}} 
@@ -10,7 +13,6 @@ command: >
   --test_data ${{inputs.test_data}} 
   --output ${{outputs.model_output}}
 
-# Inputs (using your registered Data Assets)
 inputs:
   train_data:
     type: uri_folder
@@ -22,15 +24,12 @@ inputs:
     type: uri_folder
     path: azureml:amazon_review_merged_features_test@latest
 
-# Output for the model artifact
 outputs:
   model_output:
     type: uri_folder
 
-# Environment & Compute
 environment:
-  build:
-    local_path: ../env
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  conda_file: ../env/conda.yml
+
 compute: azureml:lab4-cluster
-display_name: amazon_review_model_training
-experiment_name: amazon_review_sentiment_analysis
