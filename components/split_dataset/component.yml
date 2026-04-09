@@ -11,7 +11,7 @@ inputs:
     default: 42
   train_ratio:
     type: number
-    default: 0.7
+    default: 0.6
   val_ratio:
     type: number
     default: 0.15
@@ -23,9 +23,11 @@ outputs:
     type: uri_folder
   test:
     type: uri_folder
+  deployment:  # <--- Added for Assignment 2
+    type: uri_folder
 
 code: .
-command: >-
+command: >
   python split.py
   --data ${{inputs.data}}
   --seed ${{inputs.seed}}
@@ -34,5 +36,6 @@ command: >-
   --train_out ${{outputs.train}}
   --val_out ${{outputs.val}}
   --test_out ${{outputs.test}}
+  --deploy_out ${{outputs.deployment}} # <--- Added argument
 
 environment: azureml:AzureML-sklearn-1.1-ubuntu20.04-py38-cpu@latest

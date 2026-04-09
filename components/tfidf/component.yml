@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-
-name: tfidif
+name: tfidf
 display_name: TF-IDF Features
 type: command
 
@@ -11,6 +10,8 @@ inputs:
     type: uri_folder
   test:
     type: uri_folder
+  deploy:        # <--- Added
+    type: uri_folder
 
 outputs:
   train_out:
@@ -18,6 +19,8 @@ outputs:
   val_out:
     type: uri_folder
   test_out:
+    type: uri_folder
+  deploy_out:    # <--- Added
     type: uri_folder
 
 code: .
@@ -27,8 +30,10 @@ command: >
   --train ${{inputs.train}}
   --val ${{inputs.val}}
   --test ${{inputs.test}}
+  --deploy ${{inputs.deploy}}
   --train_out ${{outputs.train_out}}
   --val_out ${{outputs.val_out}}
   --test_out ${{outputs.test_out}}
+  --deploy_out ${{outputs.deploy_out}}
 
 environment: azureml:AzureML-sklearn-1.1-ubuntu20.04-py38-cpu@latest
