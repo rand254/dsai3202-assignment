@@ -4,4 +4,4 @@ type: azure_blob
 account_name: amazondatalake60304966
 container_name: curated
 credentials:
-  account_key: "xxlXvUfXIsfdYHok5veD6rV1cIX0mcjZwKU1KL2CPke9eL7xPMC0AqMNYcmYch0C5zRMSjnRXSR4+AStoRIWJA=="
+  account_key: ""
