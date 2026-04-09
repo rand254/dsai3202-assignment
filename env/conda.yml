@@ -1,13 +1,13 @@
-name: model_training_env
+name: amazon-review-training-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.8
-  - numpy
-  - pandas
-  - scikit-learn
+  - python=3.9
   - pip
-  - pyarrow # Needed to read Parquet files
   - pip:
+    - pandas
+    - scikit-learn
+    - pyarrow
     - mlflow
     - azureml-mlflow
+    - joblib
