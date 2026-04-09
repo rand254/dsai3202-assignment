@@ -35,7 +35,4 @@ Finally, I registered the merged dataset as a Feature Set in the Azure ML Featur
 All components, pipeline definitions, and feature store assets were committed to GitHub in the lab4_feature_engineering branch.
 
 Overall, this lab demonstrates how to build a reproducible and scalable text feature engineering workflow using Azure ML. It ensures no data leakage, supports versioning, and prepares features that can be reused in downstream machine learning tasks.
-<<<<<<< HEAD
-=======
 During pipeline execution, the merge step initially failed due to memory limitations (out-of-memory error) caused by the high dimensionality of TF-IDF features and SBERT embeddings. To resolve this while maintaining the lab structure, I reduced the TF-IDF feature size using max_features and limited the embedding dimensions. Additionally, I applied sampling during the split step to reduce dataset size. These adjustments allowed the pipeline to run successfully without changing the overall design or logic of the lab.
->>>>>>> 7022288822a31cbf92e55c094b72fdf0552af9d4
