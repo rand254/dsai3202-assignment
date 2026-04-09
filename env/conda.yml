@@ -7,7 +7,7 @@ dependencies:
   - pandas
   - scikit-learn
   - pip
-  - pyarrow
+  - pyarrow # Needed to read Parquet files
   - pip:
     - mlflow
     - azureml-mlflow
