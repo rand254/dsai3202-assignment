@@ -4,6 +4,22 @@ type: sweep
 display_name: amazon_review_sweep_Alzoubi
 experiment_name: amazon_review_training_experiment
 
+compute: azureml:lab4-cluster
+sampling_algorithm: random
+
+# 1. Define inputs at the top level
+inputs:
+  train_data:
+    type: uri_folder
+    path: azureml:amazon_review_merged_features_train:1
+  val_data:
+    type: uri_folder
+    path: azureml:amazon_review_merged_features_val:1
+  test_data:
+    type: uri_folder
+    path: azureml:amazon_review_merged_features_test:1
+
+# 2. Reference those inputs in the trial
 trial:
   code: ../src
   command: >
@@ -14,29 +30,14 @@ trial:
     --output ${{outputs.model_output}}
     --C ${{search_space.C}}
     --max_iter ${{search_space.max_iter}}
+  environment:
+    image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+    conda_file: ../env/conda.yml
 
-environment:
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
-  conda_file: ../env/conda.yml
-
-inputs:
-  train_data:
-    type: uri_folder
-    default: azureml:amazon_review_merged_features_train:1
-  val_data:
-    type: uri_folder
-    default: azureml:amazon_review_merged_features_val:1
-  test_data:
-    type: uri_folder
-    default: azureml:amazon_review_merged_features_test:1
-
+# 3. Outputs can stay at the trial level or top level, let's keep them here
 outputs:
   model_output:
     type: uri_folder
-
-compute: azureml:lab4-cluster
-
-sampling_algorithm: random
 
 search_space:
   C:
