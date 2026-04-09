@@ -8,7 +8,7 @@ pool:
 
 variables:
   # Replace X with your actual subscription number if it's different!
-  AZURE_SUBSCRIPTION: 'SC-UDST-CCIT-DSAI3202-X' 
+  AZURE_SUBSCRIPTION: 'SC-UDST-CCIT-DSAI3202-2' 
   RESOURCE_GROUP: 'rg-60304966'
   WORKSPACE_NAME: 'Amazon-Electronics-Lab-60304966'
 
