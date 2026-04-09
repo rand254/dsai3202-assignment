@@ -15,6 +15,8 @@ def parse_args():
     parser.add_argument("--val_data", type=str, required=True)
     parser.add_argument("--test_data", type=str, required=True)
     parser.add_argument("--output", type=str, required=True)
+    parser.add_argument("--C", type=float, default=1.0, help="Inverse of regularization strength")
+    parser.add_argument("--max_iter", type=int, default=100, help="Maximum number of iterations")
     return parser.parse_args()
 
 # --- Load data ---
@@ -77,6 +79,9 @@ def evaluate(model, X, y, split):
     f1 = f1_score(y, preds, average='binary')
     auc = roc_auc_score(y, probs)
 
+    mlflow.log_param("C", args.C)
+    mlflow.log_param("max_iter", args.max_iter)
+
     # Log to MLflow with names matching the instructions
     mlflow.log_metric(f"{split}_accuracy", acc)
     mlflow.log_metric(f"{split}_precision", prec)
@@ -117,7 +122,7 @@ def main():
         y_test = test_df["label"]
 
         print("Training model...")
-        model = LogisticRegression(max_iter=1000)
+        model = LogisticRegression(C=args.C, max_iter=args.max_iter, random_state=42)
         model.fit(X_train, y_train)
 
         print("Evaluating...")
