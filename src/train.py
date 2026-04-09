@@ -37,18 +37,20 @@ def create_labels(df):
 # --- Features ---
 def build_features(df):
     """
-    Automatically selects only numeric columns for training.
-    This bypasses the need to know every single column name!
+    Automatically selects only numeric columns and handles missing values.
     """
-    # 1. Drop the target labels first so they aren't used as features
+    # 1. Drop the target labels
     to_drop = ["overall", "label"]
     temp_df = df.drop(columns=to_drop, errors='ignore')
     
-    # 2. Select ONLY numeric columns (float and int)
-    # This automatically ignores reviewerID, reviewText, etc.
+    # 2. Select ONLY numeric columns
     X = temp_df.select_dtypes(include=['number'])
     
-    print(f"Features used: {X.columns.tolist()}") # This will print in your Azure logs!
+    # --- ADD THIS LINE TO FIX THE ERROR ---
+    X = X.fillna(0) 
+    # --------------------------------------
+
+    print(f"Features used: {X.columns.tolist()}")
     
     if len(X.columns) == 0:
         raise RuntimeError("Feature matrix is empty. No numeric columns found!")
