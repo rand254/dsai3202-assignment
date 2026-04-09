@@ -64,7 +64,7 @@ def build_features(df):
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 # --- Updated Evaluation Function ---
-def evaluate(model, X, y, split):
+def evaluate(model, X, y, split, args):
     """
     Calculates and logs all required metrics to MLflow.
     """
@@ -126,9 +126,9 @@ def main():
         model.fit(X_train, y_train)
 
         print("Evaluating...")
-        evaluate(model, X_train, y_train, "train")
-        evaluate(model, X_val, y_val, "val")
-        evaluate(model, X_test, y_test, "test")
+        evaluate(model, X_train, y_train, "train", args)
+        evaluate(model, X_val, y_val, "val", args)
+        evaluate(model, X_test, y_test, "test", args)
 
         print("Saving model...")
         os.makedirs(args.output, exist_ok=True)
