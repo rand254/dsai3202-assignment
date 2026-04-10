@@ -15,8 +15,8 @@ def parse_args():
     parser.add_argument("--val_data", type=str, required=True)
     parser.add_argument("--test_data", type=str, required=True)
     parser.add_argument("--output", type=str, required=True)
-    parser.add_argument("--C", type=float, default=1.0, help="Inverse of regularization strength")
-    parser.add_argument("--max_iter", type=int, default=100, help="Maximum number of iterations")
+    parser.add_argument("--C", type=float, default=0.55719)
+    parser.add_argument("--max_iter", type=int, default=300)
     return parser.parse_args()
 
 # --- Load data ---
