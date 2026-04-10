@@ -14,21 +14,16 @@ headers = {
     "Authorization": f"Bearer {API_KEY}"
 }
 
-# -------------------------------
-# Load data
-# -------------------------------
+
 def load_data(path):
     return pd.read_parquet(path)
 
-# -------------------------------
-# Create labels (same as training)
-# -------------------------------
+
 def create_labels(df):
     df["label"] = (df["overall"] >= 4).astype(int)
     return df
 
-# -------------------------------
-# Build features (EXACT SAME LOGIC)
+
 # -------------------------------
 def build_features(df):
     X = df.drop(columns=["overall", "label"], errors="ignore")
@@ -36,12 +31,9 @@ def build_features(df):
     X = X.fillna(0)
     return X
 
-# -------------------------------
-# Main
-# -------------------------------
+
 def main():
 
-    # 🔥 CHANGE THIS PATH
     deploy_path = "data/data.parquet"
 
     print("Loading deployment data...")
@@ -70,13 +62,11 @@ def main():
 
     print("Raw response:", result)
 
-    # -------------------------------
-    # Extract predictions
+
     # -------------------------------
     preds = result["predictions"]
 
-    # -------------------------------
-    # Evaluate
+
     # -------------------------------
     acc = accuracy_score(y_true, preds)
 
