@@ -46,7 +46,7 @@ def build_features(df):
     temp_df = df.drop(columns=to_drop, errors='ignore')
     
     # 2. Select ONLY numeric columns
-    X = temp_df.select_dtypes(include=['number'])
+    X = temp_df.filter(regex='^sentiment_')
     
     # --- ADD THIS LINE TO FIX THE ERROR ---
     X = X.fillna(0) 
