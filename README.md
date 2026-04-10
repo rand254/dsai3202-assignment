@@ -63,9 +63,32 @@ After confirming that the training job worked, I automated the process using Azu
 
 To improve performance, I implemented a hyperparameter sweep job. Instead of manually trying different values, Azure ML automatically tested multiple combinations of parameters such as C and max_iter. After analyzing the results, I selected the best configuration (C = 0.557 and max_iter = 300) and retrained the final model using these values.
 
+
+
 The optimized model achieved a test accuracy of around 82.2%. The recall was significantly higher than precision, which indicates that the model is very good at identifying positive reviews, although it may classify some negative reviews as positive. Overall, the model performed well and trained very quickly, making it suitable for automated pipelines.
 
 After training, I registered the model in the Azure ML Model Registry. This allows version tracking and ensures that the model can be reused or deployed later while maintaining full traceability of how it was created.
+
+
+To understand how different feature combinations affect model performance, I tested multiple configurations using the available features in the dataset.
+
+Instead of using SBERT embeddings, I focused on the features generated in Lab 4, which include sentiment scores, TF-IDF vectors, and additional metadata.
+
+The experiments were:
+
+Run 1 – Sentiment features only
+Run 2 – Sentiment + TF-IDF
+Run 3 – All features (Sentiment + TF-IDF + metadata)
+
+The best performance was achieved using Run 3 (All Features), with a test accuracy of 82.22%.
+
+This configuration performed better because it combined multiple types of information:
+
+Sentiment captures emotional tone
+TF-IDF captures important keywords
+Metadata (such as length and price) adds structural context
+
+By combining these features, the model was able to make more accurate and balanced predictions compared to using a single feature type.
 
 The next step was deployment. I created a scoring script (score.py) that loads the model and handles prediction requests, along with an inference environment file defining all required dependencies. Then, I deployed the model as a managed online endpoint in Azure ML, which exposes it as a REST API.
 
